@@ -1,0 +1,105 @@
+
+¡
+java:S2293x"YReplace the type specification in this constructor call with the diamond operator ("<>").(¨„¡²şÿÿÿÿ8Ûòõ1J$43570d11-3ebc-4c0b-ac05-04d91f26ce1e
+
+java:S2293ª"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ì¶ˆ£8ëòõ1J$5b0b75d7-ee02-40a2-8153-b236ea3b1795
+~
+java:S1141¿"5Extract this nested try block into a separate method.(ç£êúÿÿÿÿ8œóõ1J$21d6c13c-12ad-45b7-90b6-d5a064ec23f1
+q
+java:S1604¾"(Make this anonymous inner class a lambda(ü°ııÿÿÿÿ8»óõ1J$667ced1a-f60b-481a-be42-797048a8e2a0
+l
+java:S1604‡"(Make this anonymous inner class a lambda(¬ıŠ¿8Ëóõ1J$df605fd4-a333-4b72-8b49-dbfa1269ff43
+l
+java:S1604˜"(Make this anonymous inner class a lambda(€³ù¤8Ûóõ1J$004c781a-27ea-407c-a510-d171c05878f5
+š	java:S116f"XRename this field "m_categoryBox" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(“İ¤ä8¾‘õ1J$cad54db7-bb4e-4c83-986c-11d3c31016a3
+›	java:S116g"YRename this field "m_categoryTree" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡âª±8À‘õ1J$eed5dba1-4a4c-4746-a345-b6ac8dec37d8
+	java:S116h"[Rename this field "m_deckTablePanel" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(½ÖÍó8Ä‘õ1J$2db2de15-2281-48e0-877d-437d8cd480d0
+¢	java:S116i"[Rename this field "m_deckChartPanel" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Õ‘ğ’øÿÿÿÿ8Å‘õ1J$55138e49-9edb-43e2-a59c-7969e6beafdc
+™	java:S116j"WRename this field "m_learnPanel" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ùÀ8Æ‘õ1J$e595190c-5403-46f2-a3ad-1df76570e709
+—	java:S116k"VRename this field "m_statusBar" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¹¯‚P8Ç‘õ1J$5943e169-2fee-43e6-8fe6-afc40fa88c06
+¢	java:S116l"[Rename this field "m_newCardManager" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘Ìğÿÿÿÿÿ8Ç‘õ1J$bff21258-9417-49a0-b5f7-d14aee7d6117
+Ÿ	java:S116o"XRename this field "m_bottomPanel" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(à«š§üÿÿÿÿ8È‘õ1J$8b64f29b-b631-49be-b160-37ee815687c2
+	java:S116p"[Rename this field "m_showTreeButton" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Æ‹¦·8É‘õ1J$0e146325-1829-4e23-89ab-892135463916
+¢	java:S116q"`Rename this field "m_horizontalSplitPane" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ªÅÔ›8É‘õ1J$51e47cf6-e08c-489e-9d5c-65f19d8f97f8
+¥	java:S116r"^Rename this field "m_verticalSplitPane" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(şä×Õüÿÿÿÿ8Ê‘õ1J$c07a3ba0-a52c-4742-917b-3ff9f853e425
+¢	java:S116s"[Rename this field "m_treeScrollPane" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´¾°öşÿÿÿÿ8Ë‘õ1J$f9a4e994-5c00-4865-a557-403f387cd510
+“	java:S116u"QRename this field "m_main" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(€Øú„8Ë‘õ1J$3f297c37-b23d-45ee-920e-48a77dc728f8
+—	java:S116v"URename this field "m_category" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯™ø8Õ‘õ1J$ddba6206-e911-4f10-b63b-26714dc274ea
+“	java:S116w"QRename this field "m_deck" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™ŠŒâ8ã‘õ1J$58fce8eb-907d-435e-8421-727ba3d40d69
+¦	java:S116x"_Rename this field "m_selectionObservers" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¨„¡²şÿÿÿÿ8ô‘õ1J$cb832afb-bf98-4a44-97d7-e3812ce36c56
+¤	java:S116{"]Rename this field "m_showCategoryTree" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ğßîúÿÿÿÿ8’õ1J$035adc25-bc9d-4b02-a333-56089d4aed1c
+¢	java:S116|"`Rename this field "m_showCategoryTreeOld" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©¯”æ8‚’õ1J$bbb2ddea-da02-4ba3-b78e-bebda70a6079
+ 	java:S116~"^Rename this field "m_categoryTreeWidth" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(†ßÈ8ƒ’õ1J$951513cc-8ecb-4ad6-ad63-9b31fa6859fb
+¦	java:S116‚"^Rename this field "m_focusedCategories" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(…ãÙßüÿÿÿÿ8ƒ’õ1J$e7a5e82a-3987-416e-b349-f1f115bc3678
+z
+java:S1948l"2Make "m_newCardManager" transient or serializable.(‘Ìğÿÿÿÿÿ8±”õ1J$dee98afe-baad-4690-a728-f995e56c7a47
+k
+java:S1948u"(Make "m_main" transient or serializable.(€Øú„8²”õ1J$e2ac3956-53a7-4609-8270-32125960cfa2
+o
+java:S1948v",Make "m_category" transient or serializable.(¯™ø8³”õ1J$12ef844e-3655-403c-b863-1a41b199c733
+~
+java:S1948x"6Make "m_selectionObservers" transient or serializable.(¨„¡²şÿÿÿÿ8³”õ1J$8e250382-bfb0-4e4c-8776-3708b80e86e7
+~
+java:S1948‚"5Make "m_focusedCategories" transient or serializable.(…ãÙßüÿÿÿÿ8´”õ1J$b7f4617e-c44c-4e6a-bc8b-d2ae1ff22919
+}
+java:S1948"4Make "learnSettingPanels" transient or serializable.(ïåñãøÿÿÿÿ8°°¨õ1J$9129939c-855b-4f75-b728-4dfa20bd20e3
+o
+java:S1948‘"+Make "thinkQuiz" transient or serializable.(§·ÔŞ8±°¨õ1J$98671558-28db-431f-a83c-f884375a9e45
+u
+java:S1948”",Make "typeInQuiz" transient or serializable.(¾¡¾”ûÿÿÿÿ8²°¨õ1J$dad3028d-73cb-4cec-b789-71f0517fa444
+
+java:S1124]"EReorder the modifiers to comply with the Java Language Specification.(Ô›¤¦ûÿÿÿÿ8ë”õ1J$bcf61156-91de-4dc4-a9f1-f40c0a8548e0
+„	java:S125š"<This block of commented-out lines of code should be removed.(¶Œå°ûÿÿÿÿ8è•õ1J$5ed61a71-9bb0-46b4-8d5a-546d08accbe5
+	java:S125¶"<This block of commented-out lines of code should be removed.(¶´¬ñ8ŠŸ¼õ1J$46364b0f-8b8b-4d49-82d3-1819f23a49a2
+{
+java:S1135¢"2Complete the task associated to this TODO comment.(Âş„Ùûÿÿÿÿ8¬–õ1J$df1bc87f-fe5d-431b-95c7-1d7938bbb9a8
+{
+java:S1135‹"2Complete the task associated to this TODO comment.(–†À¡ÿÿÿÿÿ8—õ1J$4288492d-4b5c-404d-bea6-9020fa8315e3
+
+java:S4275"JRefactor this getter so that it actually refers to the field "learnPanel".(ãşş8¤ˆ‘õ1J$87daa0e4-21a3-4ec6-9b88-f877a55a5464
+ƒ
+java:S1161ë":Add the "@Override" annotation above this method signature(šüİûÿÿÿÿ8Ÿ›õ1J$92aaee27-dbbd-41e1-a81d-d5fd01dafc02
+„	java:S125§"<This block of commented-out lines of code should be removed.(†¾Ú¬ÿÿÿÿÿ8Ö½˜õ1J$047882f9-d0b6-4740-aeb6-9a793cad9435
+„	java:S125Ì"<This block of commented-out lines of code should be removed.(†¾Ú¬ÿÿÿÿÿ8…ºõ1J$a8582ca7-80c5-4333-98a5-cb86f061ff8c
+p
+java:S1128L"(Remove this unused import 'javax.swing'.(Ìí¿Üüÿÿÿÿ8‘ šõ1J$df46384f-dd3a-4773-8866-542d0198f06d
+a
+java:S1128M"Remove this duplicated import.(Âü«•8’ šõ1J$5d51d812-83fc-49c5-a7c7-95009c09f13a
+h
+java:S1128N"%Remove this unused import 'java.awt'.(ï´µ©8“ šõ1J$13a16297-55bb-4336-b22e-f79dccd95b05
+a
+java:S1128O"Remove this duplicated import.(Úù“‘8” šõ1J$b0b9fa5b-20f9-47b4-8b1b-057c5859a3ca
+a
+java:S1128P"Remove this duplicated import.(Ìä¹8• šõ1J$1951ddb2-655a-4ce3-9c91-b4becf6a37a1
+}
+java:S1068…"4Remove this unused "cardCounterPanel" private field.(‚³™úÿÿÿÿ8¦†ºõ1J$c7aa3823-15d4-4f30-9994-9d6253083433
+w
+java:S1068†"3Remove this unused "cardHeaderPanel" private field.(ˆâ¦¤8µ†ºõ1J$0e02698c-df98-4c58-a5e2-19e799f24b11
+q
+java:S1068‡"-Remove this unused "cardPanel" private field.(¯ÍŸá8Å†ºõ1J$1269b0c9-eb40-4150-9727-3bc5ec885dd5
+z
+java:S1068ˆ"1Remove this unused "cardSidePanel" private field.(ã·„”ûÿÿÿÿ8Ô†ºõ1J$03e7625d-6834-4174-bade-4e976e73dda2
+{
+java:S1068‰"2Remove this unused "deckChartPanel" private field.(ãé‘Ìıÿÿÿÿ8ä†ºõ1J$b9abf7c2-95b3-42fb-96e5-2a84e68bc172
+{
+java:S1068Š"2Remove this unused "deckTablePanel" private field.(®›íèüÿÿÿÿ8ô†ºõ1J$5a6b2828-f34f-4a26-ae40-d54c9eb48996
+~
+java:S1068‹"5Remove this unused "historyChartPanel" private field.(¼œ‹Ùşÿÿÿÿ8õ†ºõ1J$4e753e2d-dd07-41bd-a2c4-60387ef30f20
+w
+java:S1068Œ".Remove this unused "learnPanel" private field.(àÂÒñûÿÿÿÿ8÷†ºõ1J$be37ac7e-1d62-48e6-beee-2650ba706be2
+
+java:S1068"6Remove this unused "learnSettingPanels" private field.(ïåñãøÿÿÿÿ8ø†ºõ1J$557f005a-43ef-42cb-902e-953e85b2131b
+v
+java:S1068"-Remove this unused "quizPanel" private field.(èÖÅıÿÿÿÿ8ù†ºõ1J$0893cdeb-d7dd-496c-9380-440df2662b10
+~
+java:S1068"5Remove this unused "sessionChartPanel" private field.(¤¹õ¥üÿÿÿÿ8ú†ºõ1J$06b6aca7-e0bc-4fe8-8c2d-10b3664bc01b
+v
+java:S1068"-Remove this unused "statusBar" private field.(ÖÍÃÓşÿÿÿÿ8û†ºõ1J$1e7c645f-8e5c-4e98-b0f6-749911a76081
+q
+java:S1068‘"-Remove this unused "thinkQuiz" private field.(§·ÔŞ8ı†ºõ1J$b3e06926-acbe-47ef-860c-54b77f89208e
+w
+java:S1068’".Remove this unused "timerPanel" private field.(‚ëŒ¸üÿÿÿÿ8ş†ºõ1J$625b02d5-0059-4ca1-a1b0-674abbf6460d
+y
+java:S1068“"5Remove this unused "twoSidesCardPanel" private field.(û©¾–8€‡ºõ1J$9edf034e-9059-4151-aa16-8c52b67376de
+w
+java:S1068”".Remove this unused "typeInQuiz" private field.(¾¡¾”ûÿÿÿÿ8‡ºõ1J$a4356dd0-eaf0-4b9e-abd8-36ae442298e8
