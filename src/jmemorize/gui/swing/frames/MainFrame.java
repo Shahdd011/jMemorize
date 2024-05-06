@@ -1,7 +1,7 @@
 /*
  * jMemorize - Learning made easy (and fun) - A Leitner flashcards tool
  * Copyright(C) 2004-2008 Riad Djemili and contributors
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 1, or (at your option)
@@ -18,12 +18,7 @@
  */
 package jmemorize.gui.swing.frames;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -34,24 +29,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
-import javax.swing.TransferHandler;
-import javax.swing.UIManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import jmemorize.core.Card;
@@ -88,29 +69,31 @@ import jmemorize.gui.swing.actions.file.OpenLessonAction;
 import jmemorize.gui.swing.actions.file.SaveLessonAction;
 import jmemorize.gui.swing.dialogs.ErrorDialog;
 import jmemorize.gui.swing.dialogs.OkayButtonDialog;
-import jmemorize.gui.swing.panels.DeckChartPanel;
-import jmemorize.gui.swing.panels.DeckTablePanel;
-import jmemorize.gui.swing.panels.LearnPanel;
-import jmemorize.gui.swing.panels.SessionChartPanel;
-import jmemorize.gui.swing.panels.StatusBar;
+import jmemorize.gui.swing.panels.*;
 import jmemorize.gui.swing.widgets.CategoryComboBox;
 import jmemorize.gui.swing.widgets.CategoryTree;
 import jmemorize.util.ExtensionFileFilter;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 /**
  * The main window of jMemorize. It has a stats panel in the upper part and a
  * card table/learn panel in the bottom. Optionaly there is also a category tree
  * at the left side.
- * 
+ *
  * @author djemili
  */
-public class MainFrame extends JFrame implements CategoryObserver, 
-    SelectionProvider, SelectionObserver, LearnSessionObserver, ProgramEndObserver
+public class MainFrame extends JFrame implements CategoryObserver,
+        SelectionProvider, SelectionObserver, LearnSessionObserver, ProgramEndObserver
 {
     static public final TransferHandler     TRANSFER_HANDLER = new GeneralTransferHandler();
     public static final ExtensionFileFilter FILE_FILTER      = new ExtensionFileFilter(
-        "jml", Localization.get(LC.FILE_FILTER_DESC));
-    
+            "jml", Localization.get(LC.FILE_FILTER_DESC));
+
     private static final String             FRAME_ID             = "main";
     private static final String             REPEAT_CARD          = "repeatCard";
     private static final String             DECK_CARD            = "deckCard";
@@ -139,13 +122,30 @@ public class MainFrame extends JFrame implements CategoryObserver,
     // category tree
     private boolean                         m_showCategoryTree;
     private boolean                         m_showCategoryTreeOld;
-    
+
     private int                             m_categoryTreeWidth  = Settings.loadCategoryTreeWidth();
-    
+
     // either cards or categories can be focused, not both at the same time
     // UGLYHACK remove
     private List<Category>                  m_focusedCategories;
 
+    private boolean darkModeEnabled = false;
+    private CardCounterPanel cardCounterPanel;
+    private CardHeaderPanel cardHeaderPanel;
+    private CardPanel cardPanel;
+    private CardSidePanel cardSidePanel;
+    private DeckChartPanel deckChartPanel;
+    private DeckTablePanel deckTablePanel;
+    private HistoryChartPanel historyChartPanel;
+    private LearnPanel learnPanel;
+    private LearnSettingPanels learnSettingPanels;
+    private QuizPanel quizPanel;
+    private SessionChartPanel sessionChartPanel;
+    private StatusBar statusBar;
+    private ThinkQuiz thinkQuiz;
+    private TimerPanel timerPanel;
+    private TwoSidesCardPanel twoSidesCardPanel;
+    private TypeInQuiz typeInQuiz;
     // set look and feel before we load any frames
     static
     {
@@ -166,18 +166,38 @@ public class MainFrame extends JFrame implements CategoryObserver,
     public MainFrame()
     {
         m_main = Main.getInstance();
-        
+
         initComponents();
         loadSettings();
-        
+
         m_deckTablePanel.getCardTable().setStatusBar(m_statusBar);
         m_learnPanel.setStatusBar(m_statusBar);
-        
+
         setLesson(m_main.getLesson()); // GUI is first loaded with empty lesson
         gotoBrowseMode();
-        
+
         m_main.addLearnSessionObserver(this);
         m_main.addProgramEndObserver(this);
+        // Initialize all panels
+//        cardCounterPanel = new CardCounterPanel();
+//        cardHeaderPanel = new CardHeaderPanel();
+//        cardPanel = new CardPanel();
+//        cardSidePanel = new CardSidePanel();
+//        deckChartPanel = new DeckChartPanel();
+//        deckTablePanel = new DeckTablePanel();
+//        historyChartPanel = new HistoryChartPanel();
+//        learnPanel = new LearnPanel();
+//        learnSettingPanels = new LearnSettingPanels();
+//        quizPanel = new QuizPanel();
+//        sessionChartPanel = new SessionChartPanel();
+//        statusBar = new StatusBar();
+//        thinkQuiz = new ThinkQuiz();
+//        timerPanel = new TimerPanel();
+//        twoSidesCardPanel = new TwoSidesCardPanel();
+//        typeInQuiz = new TypeInQuiz();
+
+        // Call toggleDarkMode() from the constructor to set the initial dark mode state
+        toggleDarkMode();
     }
 
     /*
@@ -187,17 +207,17 @@ public class MainFrame extends JFrame implements CategoryObserver,
     public void selectionChanged(SelectionProvider selectionProvider)
     {
         m_focusedCategories = null;
-        
+
         updateSelectionObservers();
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.gui.swing.SelectionProvider
      */
     public List<Card> getRelatedCards()
     {
-        return m_focusedCategories == null ? 
-            getCurrentSelectionProvider().getRelatedCards() : null;
+        return m_focusedCategories == null ?
+                getCurrentSelectionProvider().getRelatedCards() : null;
     }
 
     /* (non-Javadoc)
@@ -205,10 +225,10 @@ public class MainFrame extends JFrame implements CategoryObserver,
      */
     public List<Card> getSelectedCards()
     {
-        return m_focusedCategories == null ? 
-            getCurrentSelectionProvider().getSelectedCards() : null;
+        return m_focusedCategories == null ?
+                getCurrentSelectionProvider().getSelectedCards() : null;
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.gui.swing.SelectionProvider
      */
@@ -220,7 +240,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
     /**
      * @return Returns the currently displayed category.
      */
-    public Category getCategory() 
+    public Category getCategory()
     {
         return m_category;
     }
@@ -232,7 +252,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
     {
         m_selectionObservers.add(observer);
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.gui.swing.SelectionProvider
      */
@@ -240,7 +260,6 @@ public class MainFrame extends JFrame implements CategoryObserver,
     {
         m_selectionObservers.remove(observer);
     }
-    
     public void setLesson(Lesson lesson)
     {
         Category rootCategory = lesson.getRootCategory();
@@ -254,7 +273,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
 
         updateFrameTitle();
     }
-    
+
     public void setCategory(Category category)
     {
         if (category == null) // HACK
@@ -269,7 +288,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
 
         m_deckChartPanel.setCategory(category);
         m_deckTablePanel.setCategory(category); // TODO refactor. give only list of cards
-        
+
         m_categoryBox.setSelectedCategory(category);
         m_categoryTree.setSelectedCategory(category);
 
@@ -279,41 +298,41 @@ public class MainFrame extends JFrame implements CategoryObserver,
             m_focusedCategories = new ArrayList<Category>(1); // HACK
             m_focusedCategories.add(category);
         }
-        
+
         updateSelectionObservers();
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.gui.swing.SelectionProvider
      */
     public JComponent getDefaultFocusOwner()
     {
         return m_categoryTree.isFocusOwner() ?
-            (JComponent)m_categoryTree : (JComponent)m_deckTablePanel.getCardTable();
+                (JComponent)m_categoryTree : (JComponent)m_deckTablePanel.getCardTable();
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.gui.swing.SelectionProvider
      */
-    public JFrame getFrame() 
+    public JFrame getFrame()
     {
         return this;
     }
 
     /**
      * Set the currently displayed deck.
-     * 
+     *
      * @param level the level of the deck that is to be shown. The deck with
      * unlearned cards has level 0.
      */
     public void setDeck(int level)
     {
         m_deck = level;
-        
+
         m_deckTablePanel.setDeck(level);
         m_deckChartPanel.setDeck(level);
     }
-    
+
     /**
      * @return the level of the currently shown deck. The deck with unlearned
      * cards has level 0.
@@ -335,7 +354,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
             {
                 m_categoryTreeWidth = m_horizontalSplitPane.getDividerLocation();
             }
-            
+
             m_horizontalSplitPane.setDividerSize(0);
             m_showTreeButton.setSelected(false);
             m_treeScrollPane.setVisible(false);
@@ -346,15 +365,15 @@ public class MainFrame extends JFrame implements CategoryObserver,
             {
                 m_horizontalSplitPane.setDividerLocation(m_categoryTreeWidth);
             }
-            
+
             m_showTreeButton.setSelected(true);
             m_treeScrollPane.setVisible(true);
             m_horizontalSplitPane.setDividerSize(5);
         }
-             
+
         m_showCategoryTree = show;
     }
-    
+
     /**
      * @return <code>true</code> if the category tree is currently visible.
      */
@@ -362,17 +381,17 @@ public class MainFrame extends JFrame implements CategoryObserver,
     {
         return m_showCategoryTree;
     }
-    
-    public void startLearning(Category category, List<Card> selectedCards, 
-        boolean learnUnlearned, boolean learnExpired)
+
+    public void startLearning(Category category, List<Card> selectedCards,
+                              boolean learnUnlearned, boolean learnExpired)
     {
         m_showCategoryTreeOld = m_showCategoryTree;
         showCategoryTree(false);
-        
-        m_main.startLearnSession(m_main.getLearnSettings(), selectedCards, 
-            category, learnUnlearned, learnExpired);
+
+        m_main.startLearnSession(m_main.getLearnSettings(), selectedCards,
+                category, learnUnlearned, learnExpired);
     }
-    
+
     public NewCardFramesManager getNewCardManager() // TODO pull up to a new common singleton
     {
         return m_newCardManager;
@@ -382,12 +401,12 @@ public class MainFrame extends JFrame implements CategoryObserver,
     {
         return m_learnPanel;
     }
-    
+
     public JSplitPane getVerticalSplitPane()
     {
         return m_verticalSplitPane;
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.core.CategoryObserver
      */
@@ -411,7 +430,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
      * Loads the lesson and sets it as currently loaded lesson. If there is
      * already a opened lesson, the user might be prompted to save that lesson
      * before opening the new lesson.
-     * 
+     *
      * @param file The path to the lesson. If <code>null</code> a file chooser
      * is shown that allows the user to select the file.
      */
@@ -421,11 +440,11 @@ public class MainFrame extends JFrame implements CategoryObserver,
         {
             if (!confirmCloseLesson())
                 return;
-            
+
             if (file == null)
             {
                 JFileChooser chooser = new JFileChooser();
-                try 
+                try
                 {
                     chooser.setCurrentDirectory(Settings.loadLastDirectory());
                 }
@@ -433,10 +452,10 @@ public class MainFrame extends JFrame implements CategoryObserver,
                 {
                     Main.logThrowable("Could not load last directory", ioe);
                     chooser.setCurrentDirectory(null);
-                }                
-                
+                }
+
                 chooser.setFileFilter(MainFrame.FILE_FILTER);
-    
+
                 int returnVal = chooser.showOpenDialog(this);
                 if (returnVal == JFileChooser.APPROVE_OPTION)
                 {
@@ -447,14 +466,14 @@ public class MainFrame extends JFrame implements CategoryObserver,
                     return;
                 }
             }
-        
+
             m_main.loadLesson(file);
             Settings.storeLastDirectory(file);
-            
+
             LearnHistory history = m_main.getLesson().getLearnHistory();
             if (!history.isLoaded())
                 importGlobalLearnHistory(history);
-            
+
         }
         catch (Exception e)
         {
@@ -462,14 +481,14 @@ public class MainFrame extends JFrame implements CategoryObserver,
             MessageFormat form = new MessageFormat(Localization.get(LC.ERROR_LOAD));
             String msg = form.format(args);
             Main.logThrowable(msg, e);
-            
+
             new ErrorDialog(this, msg, e).setVisible(true);
         }
     }
 
     /**
      * Saves the lesson or displays an error message if the operation failed.
-     * 
+     *
      * @param file The path to the lesson. If <code>null</code> a file chooser
      * is shown that allows the user to select the file.
      */
@@ -480,12 +499,12 @@ public class MainFrame extends JFrame implements CategoryObserver,
             if (file == null)
             {
                 file = AbstractExportAction.showSaveDialog(
-                    this, MainFrame.FILE_FILTER);
-                
+                        this, MainFrame.FILE_FILTER);
+
                 if (file == null)
                     return;
             }
-            
+
             m_main.saveLesson(lesson, file);
             updateFrameTitle();
         }
@@ -495,7 +514,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
             MessageFormat form = new MessageFormat(Localization.get(LC.ERROR_SAVE));
             String msg = form.format(args);
             Main.logThrowable(msg, e);
-           
+
             new ErrorDialog(this, msg, e).setVisible(true);
         }
     }
@@ -503,7 +522,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
     /**
      * If lesson was modified this shows a dialog that asks if the user wants to
      * save the lesson before closing it.
-     * 
+     *
      * @return <code>true</code> if user chose not to cancel the lesson close
      * operation. If this method return <code>false</code> the closing of
      * jMemorize was canceled.
@@ -527,13 +546,13 @@ public class MainFrame extends JFrame implements CategoryObserver,
         if (lesson.canSave())
         {
             int n = JOptionPane.showConfirmDialog(MainFrame.this,
-                Localization.get("MainFrame.SAVE_MODIFIED"), "Warning", //$NON-NLS-1$ //$NON-NLS-2$
-                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                    Localization.get("MainFrame.SAVE_MODIFIED"), "Warning", //$NON-NLS-1$ //$NON-NLS-2$
+                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
             if (n == JOptionPane.OK_OPTION)
             {
                 saveLesson(lesson, lesson.getFile());
-                
+
                 // if lesson was saved return true, false otherwise
                 return !lesson.canSave();
             }
@@ -544,22 +563,22 @@ public class MainFrame extends JFrame implements CategoryObserver,
 
         return true;
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.core.Main.ProgramEndObserver
      */
     public void onProgramEnd()
     {
-        int hSize = m_showTreeButton.isSelected() ? 
-            m_horizontalSplitPane.getDividerLocation() : 
-            m_categoryTreeWidth;
+        int hSize = m_showTreeButton.isSelected() ?
+                m_horizontalSplitPane.getDividerLocation() :
+                m_categoryTreeWidth;
         Settings.storeCategoryTreeWidth(hSize);
-        
+
         int vSize = m_verticalSplitPane.getDividerLocation() > 0 ?
-            m_verticalSplitPane.getDividerLocation() : 
-            m_verticalSplitPane.getLastDividerLocation();
+                m_verticalSplitPane.getDividerLocation() :
+                m_verticalSplitPane.getLastDividerLocation();
         Settings.storeMainDividerLocation(vSize);
-        
+
         Settings.storeCategoryTreeVisible(m_showTreeButton.isSelected());
         Settings.storeFrameState(this, FRAME_ID);
     }
@@ -588,11 +607,11 @@ public class MainFrame extends JFrame implements CategoryObserver,
     {
         if (!session.isRelevant())
             return;
-        
-        JDialog dialog = new OkayButtonDialog(this, 
-            Localization.get("Learn.SESSION_RESULTS"), //$NON-NLS-1$ 
-            true, new SessionChartPanel(session));
-        
+
+        JDialog dialog = new OkayButtonDialog(this,
+                Localization.get("Learn.SESSION_RESULTS"), //$NON-NLS-1$
+                true, new SessionChartPanel(session));
+
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
@@ -601,13 +620,13 @@ public class MainFrame extends JFrame implements CategoryObserver,
     {
         m_learnPanel.removeSelectionObserver(this);
         m_deckTablePanel.getCardTable().addSelectionObserver(this);
-        
+
         ((CardLayout)m_bottomPanel.getLayout()).show(m_bottomPanel, DECK_CARD);
-    
+
         m_focusedCategories = null;
-    
+
         showCategoryTree(m_showCategoryTreeOld);
-        
+
         updateSelectionObservers();
     }
 
@@ -615,11 +634,11 @@ public class MainFrame extends JFrame implements CategoryObserver,
     {
         m_deckTablePanel.getCardTable().removeSelectionObserver(this);
         m_learnPanel.addSelectionObserver(this);
-        
+
         ((CardLayout)m_bottomPanel.getLayout()).show(m_bottomPanel, REPEAT_CARD);
-    
+
         m_focusedCategories = null;
-    
+
         setDeck(-1); //needed to get right values in status bar while learning
 
         updateSelectionObservers();
@@ -640,11 +659,11 @@ public class MainFrame extends JFrame implements CategoryObserver,
         String name    = Main.PROPERTIES.getProperty("project.name");    //$NON-NLS-1$
         String version = Main.PROPERTIES.getProperty("project.version"); //$NON-NLS-1$
         String suffix  = " - " + name + " " + version; //$NON-NLS-1$ //$NON-NLS-2$
-    
+
         File file = m_main.getLesson().getFile();
         if (file != null && !getTitle().equals(file.getName()))
         {
-            setTitle(file.getName() + suffix); 
+            setTitle(file.getName() + suffix);
         }
         else if (file == null)
         {
@@ -652,25 +671,24 @@ public class MainFrame extends JFrame implements CategoryObserver,
         }
     }
 
-    private SelectionProvider getCurrentSelectionProvider() 
+    private SelectionProvider getCurrentSelectionProvider()
     {
         if (m_main.isSessionRunning())
         {
             return m_learnPanel;
         }
-        else
-        {
+        else{
             return m_deckTablePanel.getCardTable();
         }
     }
-    
+
     private void initComponents()
     {
         JPanel mainPanel = new JPanel(new BorderLayout());
-        
+
         m_deckChartPanel = new DeckChartPanel(this);
         m_deckChartPanel.setMinimumSize(new Dimension(100, 150));
-        
+
         m_learnPanel = new LearnPanel();
         m_deckTablePanel = new DeckTablePanel(this);
 
@@ -687,10 +705,10 @@ public class MainFrame extends JFrame implements CategoryObserver,
             {
                 treeSelectionChanged(source);
             }
-            
+
         });
         m_treeScrollPane = new JScrollPane(m_categoryTree);
-        
+
         // bottom panel
         m_bottomPanel = new JPanel(new CardLayout());
         m_bottomPanel.add(m_deckTablePanel, DECK_CARD);
@@ -702,10 +720,10 @@ public class MainFrame extends JFrame implements CategoryObserver,
         m_verticalSplitPane.setBorder(null);
         BasicSplitPaneUI ui = (BasicSplitPaneUI)m_verticalSplitPane.getUI();
         ui.getDivider().setBorder(new EmptyBorder(5, 2, 5, 2));
-        
+
         m_verticalSplitPane.setTopComponent(m_deckChartPanel);
         m_verticalSplitPane.setBottomComponent(m_bottomPanel);
-        
+
         mainPanel.setPreferredSize(new Dimension(800, 500));
         mainPanel.add(m_verticalSplitPane, BorderLayout.CENTER);
 
@@ -717,7 +735,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
 
         m_horizontalSplitPane.setLeftComponent(m_treeScrollPane);
         m_horizontalSplitPane.setRightComponent(mainPanel);
-        
+
         // frame content pane
         getContentPane().add(northPanel, BorderLayout.NORTH);
         getContentPane().add(m_horizontalSplitPane, BorderLayout.CENTER);
@@ -731,9 +749,9 @@ public class MainFrame extends JFrame implements CategoryObserver,
                 ExitAction.exit();
             }
         });
-        
+
         setIconImage(Toolkit.getDefaultToolkit().getImage(
-            getClass().getResource("/resource/icons/main.png"))); //$NON-NLS-1$
+                getClass().getResource("/resource/icons/main.png"))); //$NON-NLS-1$
         pack();
     }
 
@@ -748,7 +766,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
         categoryToolbar.add(m_showTreeButton);
 
         JLabel categoryLabel = new JLabel(
-            Localization.get(LC.CATEGORY), SwingConstants.CENTER);
+                Localization.get(LC.CATEGORY), SwingConstants.CENTER);
         categoryLabel.setPreferredSize(new Dimension(60, 15));
         categoryToolbar.add(categoryLabel);
 
@@ -767,9 +785,94 @@ public class MainFrame extends JFrame implements CategoryObserver,
         categoryPanel.setBorder(new EtchedBorder());
         categoryPanel.add(categoryToolbar, BorderLayout.NORTH);
 
+        categoryToolbar.setFloatable(false);
+        categoryToolbar.setMargin(new Insets(2, 2, 2, 2));
+
+        JButton darkModeButton = new JButton("Dark Mode");
+        darkModeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleDarkMode();
+            }
+        });
+        categoryToolbar.add(darkModeButton);
+
         return categoryPanel;
     }
-    
+  //  public boolean isDarkMode = false; // Track the current mode
+
+    /**
+     * Toggle dark mode.
+     */
+//    private void toggleDarkMode() {
+//        isDarkMode = !isDarkMode;
+//        if (isDarkMode) {
+//            // Apply dark mode colors
+//            UIManager.put("Panel.background", new ColorUIResource(Color.BLACK));
+//            UIManager.put("Label.foreground", new ColorUIResource(Color.WHITE));
+//            // Add more UI component color changes as needed
+//        } else {
+//            // Apply light mode colors (you can define these)
+//            UIManager.put("Panel.background", new ColorUIResource(Color.WHITE));
+//            UIManager.put("Label.foreground", new ColorUIResource(Color.BLACK));
+//            // Add more UI component color changes as needed
+//        }
+//        // Update the UI
+//        SwingUtilities.updateComponentTreeUI(this);
+//    }
+
+    private void toggleDarkMode() {
+        darkModeEnabled = !darkModeEnabled;
+
+        if (darkModeEnabled) {
+            // Set dark mode colors
+            UIManager.put("Panel.background", new ColorUIResource(Color.BLACK));
+            UIManager.put("Label.foreground", new ColorUIResource(Color.WHITE));
+            UIManager.put("Button.background", new ColorUIResource(Color.DARK_GRAY));
+            UIManager.put("Button.foreground", new ColorUIResource(Color.WHITE));
+        } else {
+            // Set light mode colors
+            UIManager.put("Panel.background", new ColorUIResource(Color.WHITE));
+            UIManager.put("Label.foreground", new ColorUIResource(Color.BLACK));
+            UIManager.put("Button.background", new ColorUIResource(Color.WHITE));
+            UIManager.put("Button.foreground", new ColorUIResource(Color.BLACK));
+        }
+
+        // Update the UI
+        SwingUtilities.updateComponentTreeUI(this);
+    }
+    //oooo
+//    private void toggleDarkMode() {
+//        darkModeEnabled = !darkModeEnabled;
+//
+//        // Update UI components based on dark mode state
+//        updateUIComponents();
+//    }
+//
+//    // Method to update UI components based on dark mode state
+//    private void updateUIComponents() {
+//        // Set dark mode for each panel
+//        cardCounterPanel.setDarkMode(darkModeEnabled);
+//        cardHeaderPanel.setDarkMode(darkModeEnabled);
+//        cardPanel.setDarkMode(darkModeEnabled);
+//        cardSidePanel.setDarkMode(darkModeEnabled);
+//        deckChartPanel.setDarkMode(darkModeEnabled);
+//        deckTablePanel.setDarkMode(darkModeEnabled);
+//        historyChartPanel.setDarkMode(darkModeEnabled);
+//        learnPanel.setDarkMode(darkModeEnabled);
+//        learnSettingPanels.setDarkMode(darkModeEnabled);
+//        quizPanel.setDarkMode(darkModeEnabled);
+//        sessionChartPanel.setDarkMode(darkModeEnabled);
+//        statusBar.setDarkMode(darkModeEnabled);
+//        thinkQuiz.setDarkMode(darkModeEnabled);
+//        timerPanel.setDarkMode(darkModeEnabled);
+//        twoSidesCardPanel.setDarkMode(darkModeEnabled);
+//        typeInQuiz.setDarkMode(darkModeEnabled);
+//
+//        // Add similar update calls for other components if needed
+//        // ...
+//    }
+
     private JPanel buildOperationsBar()
     {
         JToolBar operationsToolbar = new JToolBar();
@@ -778,16 +881,16 @@ public class MainFrame extends JFrame implements CategoryObserver,
         operationsToolbar.add(new JButton(new NewLessonAction()));
         operationsToolbar.add(new JButton(new OpenLessonAction()));
         operationsToolbar.add(new JButton(new SaveLessonAction()));
-        
+
         operationsToolbar.add(new JButton(new AddCardAction(this)));
         operationsToolbar.add(new JButton(new EditCardAction(this)));
         operationsToolbar.add(new JButton(new ResetCardAction(this)));
         operationsToolbar.add(new JButton(new RemoveAction(this)));
-        
+
         operationsToolbar.add(new JButton(new AddCategoryAction(this)));
         operationsToolbar.add(new JButton(new FindAction()));
         operationsToolbar.add(new JButton(new LearnAction(this)));
-        
+
         JPanel operationsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
         operationsPanel.add(operationsToolbar);
 
@@ -802,7 +905,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
     private void treeSelectionChanged(SelectionProvider source)
     {
         assert source == m_categoryTree;
-        
+
         if (!m_categoryTree.isPendingSelection())
         {
             Category category = m_categoryTree.getSelectedCategory();
@@ -810,7 +913,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
                 setCategory(category);
         }
     }
-    
+
     private void loadSettings()
     {
         showCategoryTree(Settings.loadCategoryTreeVisible());
@@ -823,9 +926,9 @@ public class MainFrame extends JFrame implements CategoryObserver,
         LearnHistory globalHistory = m_main.getGlobalLearnHistory();
         for (SessionSummary summary : globalHistory.getSummaries())
         {
-            history.addSummary(summary.getStart(), summary.getEnd(), 
-                (int)summary.getPassed(), (int)summary.getFailed(), 
-                (int)summary.getSkipped(), (int)summary.getRelearned());
+            history.addSummary(summary.getStart(), summary.getEnd(),
+                    (int)summary.getPassed(), (int)summary.getFailed(),
+                    (int)summary.getSkipped(), (int)summary.getRelearned());
         }
     }
 }
