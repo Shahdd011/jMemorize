@@ -1,7 +1,7 @@
 /*
  * jMemorize - Learning made easy (and fun) - A Leitner flashcards tool
  * Copyright(C) 2004-2008 Riad Djemili and contributors
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 1, or (at your option)
@@ -25,13 +25,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -62,7 +56,7 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
 /**
  * The window that is used to edit cards. Note this is a singleton class. The
  * same window will be reused for all editting.
- * 
+ *
  * @author djemili
  */
 public class EditCardFrame extends EscapableFrame implements CategoryObserver, SelectionProvider
@@ -77,13 +71,13 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
             setMnemonic(1);
         }
 
-        public void actionPerformed(java.awt.event.ActionEvent e) 
+        public void actionPerformed(java.awt.event.ActionEvent e)
         {
             if (confirmCardSides())
                 showNext();
         }
     }
-    
+
     private class PreviousCardAction extends AbstractAction2
     {
         public PreviousCardAction()
@@ -94,13 +88,13 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
             setMnemonic(1);
         }
 
-        public void actionPerformed(java.awt.event.ActionEvent e) 
+        public void actionPerformed(java.awt.event.ActionEvent e)
         {
             if (confirmCardSides())
                 showPrevious();
-        }        
+        }
     }
-    
+
     private static final int     MAX_TITLE_LENGTH     = 80;
     private static final String  FRAME_ID             = "editcard"; //$NON-NLS-1$
 
@@ -119,9 +113,9 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
 
     private CardHeaderPanel         m_headerPanel        = new CardHeaderPanel();
     private TwoSidesCardPanel       m_cardPanel          = new TwoSidesCardPanel(true);
-    
+
     private static EditCardFrame    m_instance;
-    
+
     /**
      * @return The singleton instance.
      */
@@ -131,13 +125,13 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
         {
             m_instance = new EditCardFrame();
         }
-        
+
         return m_instance;
     }
-    
+
     /**
      * Shows the Edit Card Frame and allows user to edit the card card.
-     * 
+     *
      * @param card The card that is to be shown and editted.
      */
     public void showCard(Card card)
@@ -146,19 +140,19 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
         cards.add(card);
         showCard(card, cards, card.getCategory());
     }
-    
+
     /**
      * Shows the Edit Card Frame and allows user to edit the card card.
-     * 
+     *
      * @param card the card that is to be shown and editted.
-     * 
+     *
      * @param cards the cards that belong to the context of the card that is to
      * be edited. These cards are used to allow browsing to next and previous
      * card. Therefore the card given on the former parameter is usually also
      * part of this list. The usual mode is to show the currently selected card
      * and to give all other cards that are part of the same card table/learn
      * history etc. as additional cards.
-     * 
+     *
      * @param category The category that includes all cards from former
      * parameters.
      */
@@ -166,17 +160,17 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
     {
         showCard(card, cards, category, null, 0, true); //HACK
     }
-    
+
     public void showCard(Card card, List<Card> cards, Category category,
-        String searchText, int side, boolean ignoreCase)
+                         String searchText, int side, boolean ignoreCase)
     {
         if (isVisible() && !confirmCardSides())
             return;
-        
+
         m_currentCard = card;
         m_currentCardIndex = cards.indexOf(card);
         m_cards = new ArrayList<Card>(cards);
-        
+
         if (m_category != null)
         {
             m_category.removeObserver(this);
@@ -186,26 +180,26 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
         {
             category.addObserver(this);
         }
-        
+
         updatePanel();
         setVisible(true);
     }
-    
+
     /**
      * @return True if window was closed. False if this was prevented by user
      * option.
      */
-    public boolean close() 
+    public boolean close()
     {
         if (confirmCardSides())
         {
             hideFrame();
             return true;
         }
-        
+
         return false;
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.core.CategoryObserver
      */
@@ -218,7 +212,7 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
             {
                 hideFrame();
             }
-            
+
             // delete all cards that are part of a deleted category branch
             for (Card card : m_cards)
             {
@@ -227,7 +221,7 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
                     m_cards.remove(card);
                 }
             }
-            
+
             m_currentCardIndex = m_cards.indexOf(m_currentCard);
             updateActions();
         }
@@ -246,7 +240,7 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
         {
             updateCardHeader();
         }
-        
+
         if (type == REMOVED_EVENT)
         {
             if (m_currentCard == card)
@@ -264,7 +258,7 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
                     hideFrame();
                 }
             }
-            
+
             if (m_cards.remove(card)) // is this card is relevant
             {
                 // we need to update index because cards changed
@@ -273,7 +267,7 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
             }
         }
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.gui.swing.SelectionProvider
      */
@@ -305,11 +299,11 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
     {
         return null; // HACK
     }
-    
+
     /* (non-Javadoc)
      * @see jmemorize.gui.swing.SelectionProvider
      */
-    public JFrame getFrame() 
+    public JFrame getFrame()
     {
         return this;
     }
@@ -348,40 +342,40 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
 
     /**
      * If the content of the text panes differ from the currently saved card
-     * entries, this will bring up a dialog that asks if the user wants to save 
+     * entries, this will bring up a dialog that asks if the user wants to save
      * the changes. If yes is selected the card sides are saved.
-     * 
-     * This should be called everytime there is the chance of losing card 
+     *
+     * This should be called everytime there is the chance of losing card
      * informations.
-     * 
+     *
      * @return True if operation wasnt aborted by user.
      */
     private boolean confirmCardSides()
     {
         if (isChanged())
         {
-            int n = JOptionPane.showConfirmDialog(this, 
-                Localization.get("EditCard.MODIFIED_WARN"), //$NON-NLS-1$
-                Localization.get("EditCard.MODIFIED_WARN_TITLE"), //$NON-NLS-1$
-                JOptionPane.YES_NO_CANCEL_OPTION,  JOptionPane.WARNING_MESSAGE);
+            int n = JOptionPane.showConfirmDialog(this,
+                    Localization.get("EditCard.MODIFIED_WARN"), //$NON-NLS-1$
+                    Localization.get("EditCard.MODIFIED_WARN_TITLE"), //$NON-NLS-1$
+                    JOptionPane.YES_NO_CANCEL_OPTION,  JOptionPane.WARNING_MESSAGE);
 
             if (n == JOptionPane.CANCEL_OPTION)
             {
                 return false;
             }
-            
+
             if (n == JOptionPane.YES_OPTION)
             {
                 return saveCard();
             }
         }
-        
+
         // if no changes or NO chosen
         return true;
     }
-    
-    /** 
-     * Creates new form EditCardFrame 
+
+    /**
+     * Creates new form EditCardFrame
      */
     private EditCardFrame()
     {
@@ -403,7 +397,7 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
                 updateApplyButton();
             }
         });
-        
+
         m_cardPanel.getCategoryComboBox().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
@@ -411,59 +405,59 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
             }
         });
     }
-    
+
     private void updateApplyButton()
     {
         m_applyButton.setEnabled(isChanged());
     }
-    
+
     private boolean isChanged()
     {
         boolean categoryChanged = m_currentCard.getCategory() !=
-            m_cardPanel.getCategoryComboBox().getSelectedCategory();
-        
+                m_cardPanel.getCategoryComboBox().getSelectedCategory();
+
         if (categoryChanged)
             return true;
-        
+
         CardSide frontSide = m_currentCard.getFrontSide();
         CardSide backSide = m_currentCard.getBackSide();
-        
-        boolean textChanged = 
-            !m_cardPanel.getFrontText().equals(frontSide.getText()) ||
-            !m_cardPanel.getBackText().equals(backSide.getText());
-        
+
+        boolean textChanged =
+                !m_cardPanel.getFrontText().equals(frontSide.getText()) ||
+                        !m_cardPanel.getBackText().equals(backSide.getText());
+
         if (textChanged)
             return true;
-        
+
         if (!ImageRepository.equals(m_cardPanel.getFrontImages(), frontSide.getImages()))
             return true;
-        
+
         if (!ImageRepository.equals(m_cardPanel.getBackImages(), backSide.getImages()))
             return true;
 
         return false;
     }
-    
+
     private void updatePanel()
     {
         updateTitle();
-        
+
         CardSide frontSide = m_currentCard.getFrontSide();
         CardSide backSide = m_currentCard.getBackSide();
-        
+
         // set sides
         m_cardPanel.setTextSides(frontSide.getText(), backSide.getText());
         m_cardPanel.setImages(frontSide.getImages(), backSide.getImages());
-        
+
         highlightSearchText();
         updateActions();
         updateCardHeader();
-        
+
         Category rootCategory = Main.getInstance().getLesson().getRootCategory();
         CategoryComboBox categoryComboBox = m_cardPanel.getCategoryComboBox();
         categoryComboBox.setRootCategory(rootCategory);
         categoryComboBox.setSelectedCategory(m_currentCard.getCategory());
-        
+
         updateApplyButton();
     }
 
@@ -480,12 +474,12 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
             title = title.substring(0, MAX_TITLE_LENGTH) + "..."; //$NON-NLS-1$
         }
         setTitle(title);
-        
+
 //        Date dateExpired = m_currentCard.getDateExpired();
 //        ImageIcon icon = CardStatusIcons.getInstance().getCardIcon(dateExpired);
 //        setIconImage(icon.getImage());
     }
-    
+
     /**
      * Updates the actions of this EditCardFrame i.e. enabling/disabling certain
      * buttons.
@@ -503,7 +497,7 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
             m_nextCardAction.setEnabled(hasNext());
         }
     }
-    
+
     /**
      * @return <code>true</code> if there is another card left after this one.
      */
@@ -511,7 +505,7 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
     {
         return m_currentCardIndex < m_cards.size() - 1;
     }
-    
+
     /**
      * @return <code>true</code> if there is a another card before this one.
      */
@@ -519,7 +513,7 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
     {
         return m_currentCardIndex > 0;
     }
-    
+
     /**
      * Show the next card of the card list of this EditCardFrame.
      */
@@ -528,52 +522,52 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
         m_currentCard = (Card)m_cards.get(++m_currentCardIndex);
         updatePanel();
     }
-    
+
     /**
      * Show the previous card of the card list of this EditCardFrame.
      */
     private void showPrevious()
     {
         m_currentCard = (Card)m_cards.get(--m_currentCardIndex);
-        updatePanel();    
+        updatePanel();
     }
-    
+
     private boolean saveCard()
     {
         if (m_cardPanel.isValidCard())
         {
             FormattedText frontText = m_cardPanel.getFrontText();
             FormattedText backText = m_cardPanel.getBackText();
-            
+
             ImageRepository repo = ImageRepository.getInstance();
-            
+
             List<String> frontIDs = repo.addImages(m_cardPanel.getFrontImages());
             List<String> backIDs = repo.addImages(m_cardPanel.getBackImages());
-            
+
             m_currentCard.setSides(frontText, backText);
             m_currentCard.getFrontSide().setImages(frontIDs);
             m_currentCard.getBackSide().setImages(backIDs);
-            
+
             CategoryComboBox categoryComboBox = m_cardPanel.getCategoryComboBox();
             Category newCategory = categoryComboBox.getSelectedCategory();
             if (newCategory != m_currentCard.getCategory())
             {
                 m_currentCard.getCategory().moveCard(m_currentCard, newCategory);
             }
-            
+
             updateTitle();
             updateCardHeader();
             updateApplyButton();
-            
+
             return true;
         }
         else
         {
-            JOptionPane.showMessageDialog(this, 
-                Localization.get(LC.EMPTY_SIDES_ALERT),
-                Localization.get(LC.EMPTY_SIDES_ALERT_TITLE),
-                JOptionPane.ERROR_MESSAGE);
-            
+            JOptionPane.showMessageDialog(this,
+                    Localization.get(LC.EMPTY_SIDES_ALERT),
+                    Localization.get(LC.EMPTY_SIDES_ALERT_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
+
             return false;
         }
     }
@@ -583,78 +577,98 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
         m_headerPanel.setCard(m_currentCard);
     }
 
-    private void initComponents() 
+    private void initComponents()
     {
         getContentPane().add(buildToolBar(), BorderLayout.NORTH);
         getContentPane().add(buildHeaderPanel(), BorderLayout.CENTER);
         getContentPane().add(buildBottomButtonBar(), BorderLayout.SOUTH);
 
         setIconImage(Toolkit.getDefaultToolkit().getImage(
-            getClass().getResource("/resource/icons/card_edit.gif"))); //$NON-NLS-1$
+                getClass().getResource("/resource/icons/card_edit.gif"))); //$NON-NLS-1$
         pack();
     }
-
-    private JPanel buildHeaderPanel()
+    private JPanel buildHeaderPanel() ////////////////// Scrolling bar part  //////////////
     {
         m_headerPanel.setBorder(new EtchedBorder());
         m_cardPanel.setBorder(Borders.DIALOG_BORDER);
-        
+
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(m_headerPanel, BorderLayout.NORTH);
         panel.add(m_cardPanel, BorderLayout.CENTER);
-        
-        return panel;
+
+        // Wrap the panel in a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        // Create a new JPanel to contain the scroll pane
+        JPanel panelWithScrollPane = new JPanel(new BorderLayout());
+        panelWithScrollPane.add(scrollPane, BorderLayout.CENTER);
+
+        return panelWithScrollPane;
     }
 
+    /*
+        private JPanel buildHeaderPanel()
+        {
+            m_headerPanel.setBorder(new EtchedBorder());
+            m_cardPanel.setBorder(Borders.DIALOG_BORDER);
+
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.add(m_headerPanel, BorderLayout.NORTH);
+            panel.add(m_cardPanel, BorderLayout.CENTER);
+
+            return panel;
+        }
+    */
     private JToolBar buildToolBar()
     {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        
+
         toolBar.add(new JButton(new AddCardAction(this)));
         toolBar.add(new JButton(m_previousCardAction));
         toolBar.add(new JButton(m_nextCardAction));
         toolBar.add(new JButton(new ResetCardAction(this)));
         toolBar.add(new JButton(new RemoveAction(this)));
-        
+
         return toolBar;
     }
-    
+
     private JPanel buildBottomButtonBar()
     {
         JButton okayButton = new JButton(Localization.get(LC.OKAY));
         okayButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) 
+            public void actionPerformed(ActionEvent evt)
             {
                 saveCard();
                 close();
             }
         });
-        
+
         JButton cancelButton = new JButton(Localization.get(LC.CANCEL));
         cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) 
+            public void actionPerformed(ActionEvent evt)
             {
                 hideFrame();
             }
         });
-        
+
         m_applyButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) 
+            public void actionPerformed(ActionEvent evt)
             {
                 saveCard();
             }
         });
-        
+
         JPanel buttonPanel = ButtonBarFactory.buildOKCancelApplyBar(
-            okayButton, cancelButton, m_applyButton);
+                okayButton, cancelButton, m_applyButton);
         buttonPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
-        
+
         getRootPane().setDefaultButton(okayButton);
-        
+
         return buttonPanel;
     }
-    
+
     private void highlightSearchText()
     {
 //        if (m_searchText != null)
@@ -665,14 +679,14 @@ public class EditCardFrame extends EscapableFrame implements CategoryObserver, S
 //                frontPositions = SearchTool.search(m_currentCard.getFrontSide(),
 //                    m_searchText, m_searchSide, m_searchCase);
 //            }
-//            
+//
 //            List backPositions = null;
 //            if (m_searchSide == SearchTool.FLIP_SIDE|| m_searchSide == SearchTool.BOTH_SIDES)
 //            {
 //                backPositions = SearchTool.search(m_currentCard.getBackSide(),
 //                    m_searchText, m_searchSide, m_searchCase);
 //            }
-//            
+//
 //            m_cardPanel.highlight(frontPositions, backPositions, m_searchText.length());
 //        }
     }
