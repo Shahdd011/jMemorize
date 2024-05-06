@@ -841,6 +841,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
         // Update the UI
         SwingUtilities.updateComponentTreeUI(this);
     }
+    //oooo
 //    private void toggleDarkMode() {
 //        darkModeEnabled = !darkModeEnabled;
 //
