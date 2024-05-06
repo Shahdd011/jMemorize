@@ -18,12 +18,7 @@
  */
 package jmemorize.gui.swing.frames;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -34,24 +29,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
-import javax.swing.TransferHandler;
-import javax.swing.UIManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import jmemorize.core.Card;
@@ -104,7 +85,7 @@ import jmemorize.util.ExtensionFileFilter;
  * 
  * @author djemili
  */
-public class MainFrame extends JFrame implements CategoryObserver, 
+public class MainFrame extends JFrame implements CategoryObserver,
     SelectionProvider, SelectionObserver, LearnSessionObserver, ProgramEndObserver
 {
     static public final TransferHandler     TRANSFER_HANDLER = new GeneralTransferHandler();
@@ -748,7 +729,7 @@ public class MainFrame extends JFrame implements CategoryObserver,
         categoryToolbar.add(m_showTreeButton);
 
         JLabel categoryLabel = new JLabel(
-            Localization.get(LC.CATEGORY), SwingConstants.CENTER);
+                Localization.get(LC.CATEGORY), SwingConstants.CENTER);
         categoryLabel.setPreferredSize(new Dimension(60, 15));
         categoryToolbar.add(categoryLabel);
 
@@ -767,9 +748,43 @@ public class MainFrame extends JFrame implements CategoryObserver,
         categoryPanel.setBorder(new EtchedBorder());
         categoryPanel.add(categoryToolbar, BorderLayout.NORTH);
 
+        categoryToolbar.setFloatable(false);
+        categoryToolbar.setMargin(new Insets(2, 2, 2, 2));
+
+        JButton darkModeButton = new JButton("Dark Mode");
+        darkModeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleDarkMode();
+            }
+        });
+        categoryToolbar.add(darkModeButton);
+
         return categoryPanel;
     }
-    
+    public boolean isDarkMode = false; // Track the current mode
+
+    /**
+     * Toggle dark mode.
+     */
+    private void toggleDarkMode() {
+        isDarkMode = !isDarkMode;
+        if (isDarkMode) {
+            // Apply dark mode colors
+            UIManager.put("Panel.background", new ColorUIResource(Color.BLACK));
+            UIManager.put("Label.foreground", new ColorUIResource(Color.WHITE));
+            // Add more UI component color changes as needed
+        } else {
+            // Apply light mode colors (you can define these)
+            UIManager.put("Panel.background", new ColorUIResource(Color.WHITE));
+            UIManager.put("Label.foreground", new ColorUIResource(Color.BLACK));
+            // Add more UI component color changes as needed
+        }
+        // Update the UI
+        SwingUtilities.updateComponentTreeUI(this);
+    }
+
+
     private JPanel buildOperationsBar()
     {
         JToolBar operationsToolbar = new JToolBar();
@@ -778,16 +793,16 @@ public class MainFrame extends JFrame implements CategoryObserver,
         operationsToolbar.add(new JButton(new NewLessonAction()));
         operationsToolbar.add(new JButton(new OpenLessonAction()));
         operationsToolbar.add(new JButton(new SaveLessonAction()));
-        
+
         operationsToolbar.add(new JButton(new AddCardAction(this)));
         operationsToolbar.add(new JButton(new EditCardAction(this)));
         operationsToolbar.add(new JButton(new ResetCardAction(this)));
         operationsToolbar.add(new JButton(new RemoveAction(this)));
-        
+
         operationsToolbar.add(new JButton(new AddCategoryAction(this)));
         operationsToolbar.add(new JButton(new FindAction()));
         operationsToolbar.add(new JButton(new LearnAction(this)));
-        
+
         JPanel operationsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
         operationsPanel.add(operationsToolbar);
 
